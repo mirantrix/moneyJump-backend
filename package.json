@@ -1,14 +1,21 @@
 {
-  "name": "moneyjump-backend",
+  "name": "react-express",
   "version": "1.0.0",
-  "description": "MoneyJump app - Backend",
-  "main": "index.js",
+  "description": "",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "cd .. && cd moneyJump-frontend && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.4"
+     "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.18.9"
   }
 }
