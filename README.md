@@ -42,8 +42,8 @@ $ npm install mongoose
 
 ```
 
-$ git clone https://github.com/mirantrix/moneyJump-backend.git
-$ cd moneyJump-backend
+$ git clone https://github.com/mirantrix/codeSampleExercises.git
+$ cd mentor-express
 $ node app.js
 
 ```
