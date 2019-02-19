@@ -1,19 +1,16 @@
 var express = require('express');
 var app = express();
-
+var User = require('./models/usersSchema').User;
 
 app.get('/api/users', (req, res) => {
 
-  var users = [
-    {id: 1, firstName: ' Alex', lastName: 'Smith'},
-    {id: 2, firstName: ' Carl', lastName: 'Sagan'},
-    {id: 3, firstName: ' Elon', lastName: 'Musk'},
-    {id: 4, firstName: ' Michael', lastName: 'Jordan'},
-    {id: 5, firstName: ' Marvin', lastName: 'Minsky'},
-    {id: 6, firstName: ' Jerry', lastName: 'Seinfeld'}
-  ];
+  var uber = new User({name: "Uber", amount: '150', category: 'Transportation', date: new Date()});
+  var amazon = new User({name: "Amazon", amount: '550', category: 'Online-Shopping', date: new Date()});
 
-  res.json(users);
+  var services = [uber, amazon];
+
+  console.log(services);
+  res.json(services);
 
 })
 
