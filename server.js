@@ -5,7 +5,11 @@ var convert = require('xml-js');
 const csvtojsonV1 = require("csvtojson/v1");
 var csv = require('csvtojson');
 var User = require('./models/usersSchema').User;
+var cors = require('cors');
 
+
+app.use(cors());
+app.use(express.static('public'));
 
 // Form Data
 var formData = require('express-form-data');
@@ -40,16 +44,32 @@ app.get('/api/users', (req, res) => {
 })
 
 
-// Route
-//app.use('/', express.static('public'));
 
+// From Client
+
+app.post('/api/upload-data', (req, res) => {
+
+  var fileName = new Date().getTime();
+  var extension = req.files.uploadFile.path.split(".").pop();
+
+  fs.rename(req.files.uploadFile.path, 'public/assets/files/' + fileName + '.' + extension, function(err){
+   if(!err){
+     res.send('POSTED!!!');
+   } else {
+     res.send("ERROR");
+   }
+ });
+
+});
+
+
+// From Server
 
 
 app.get('/api/upload', (req, res) => {
   console.log("In");
   res.render('index', {hi:"HI"});
 });
-
 
 
 app.post('/api/post-file', (req, res) => {
@@ -59,7 +79,8 @@ app.post('/api/post-file', (req, res) => {
   fs.rename(req.body.uploadFile.path, 'public/assets/files/' + req.body.title + '.' + extension, function(err){
     if(!err){
       console.log('public/assets/files/' + req.body.title + '.' + extension);
-      res.redirect('/api/showroom');
+      res.send('POSTED!!!');
+      //res.redirect('/api/showroom');
     } else {
       res.send("ERROR");
     }
@@ -68,7 +89,7 @@ app.post('/api/post-file', (req, res) => {
 
 
 app.get('/api/showroomXML', (req, res) => {
-  var readXML = fs.readFileSync("*****************", 'utf8');
+  var readXML = fs.readFileSync("public/assets/files/XMLFile.xml", 'utf8');
   var json = convert.xml2json(readXML, {compact: false, spaces: 4});
   var objectData = JSON.parse(json, null, 2);
   var rfc = objectData.elements[0].elements[0].attributes.Rfc;
