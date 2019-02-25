@@ -7,9 +7,11 @@ var csv = require('csvtojson');
 var User = require('./models/usersSchema').User;
 var cors = require('cors');
 
-
-app.use(cors());
-app.use(express.static('public'));
+// CORS
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200
+}
 
 // Form Data
 var formData = require('express-form-data');
@@ -28,18 +30,51 @@ var methodOverride = require('method-override');
 app.use(methodOverride('_method'));
 
 
-// Template View
-app.set('view engine', 'pug');
+
+// App Use
+app.use(cors(corsOptions));
+app.use(express.static('public'));
+
+
+
+// Response
+app.get('/api/users/moneyJump', (req, res) => {
+
+  var moneyJump = {
+    id: new Date().getTime(),
+    name: 'Uber', amount: '250',
+    category: 'Transportation',
+    image:'http://localhost:5000/assets/files/1550992119148.png',
+    date: new Date()};
+
+  res.json(moneyJump);
+
+})
+
 
 app.get('/api/users', (req, res) => {
 
-  var uber = new User({name: "Uber", amount: '150', category: 'Transportation', date: new Date()});
-  var amazon = new User({name: "Amazon", amount: '550', category: 'Online-Shopping', date: new Date()});
+  var moneyJump = {
+    id: 'Ixwuh376UHIhslI',
+    name:'moneyJump',
+    amount:'250',
+    category:'Transportation',
+    image:'http://localhost:5000/assets/files/1550992119148.png',
+    date: new Date()
+  };
 
-  var services = [uber, amazon];
+  var chatBot = {
+    id: 'QoijhsuHQGIIYIUH',
+    name: 'ChatBot',
+    amount: '250',
+    category: 'Transportation',
+    image:'http://localhost:5000/assets/files/1550992119148.png',
+    date: new Date()
+  };
 
-  console.log(services);
-  res.json(services);
+  var users = [moneyJump, chatBot];
+
+  res.json(users);
 
 })
 
@@ -59,54 +94,9 @@ app.post('/api/upload-data', (req, res) => {
      res.send("ERROR");
    }
  });
-
 });
 
 
-// From Server
-
-
-app.get('/api/upload', (req, res) => {
-  console.log("In");
-  res.render('index', {hi:"HI"});
-});
-
-
-app.post('/api/post-file', (req, res) => {
-
-  var extension = req.body.uploadFile.path.split(".").pop();
-
-  fs.rename(req.body.uploadFile.path, 'public/assets/files/' + req.body.title + '.' + extension, function(err){
-    if(!err){
-      console.log('public/assets/files/' + req.body.title + '.' + extension);
-      res.send('POSTED!!!');
-      //res.redirect('/api/showroom');
-    } else {
-      res.send("ERROR");
-    }
-  });
-});
-
-
-app.get('/api/showroomXML', (req, res) => {
-  var readXML = fs.readFileSync("public/assets/files/XMLFile.xml", 'utf8');
-  var json = convert.xml2json(readXML, {compact: false, spaces: 4});
-  var objectData = JSON.parse(json, null, 2);
-  var rfc = objectData.elements[0].elements[0].attributes.Rfc;
-  console.log(rfc);
-  res.render('showroom', { json : rfc});
-});
-
-
-app.get('/api/showroomCSV', (req, res) => {
-  var readCSV = "*****************";
-  csv()
-  .fromFile(readCSV)
-  .then((objectData)=>{
-      console.log(objectData[0]);
-      res.render('showroom', { json : objectData[0]});
-  })
-});
 
 
 const port = 5000;
