@@ -5,6 +5,7 @@ var convert = require('xml-js');
 const csvtojsonV1 = require("csvtojson/v1");
 var csv = require('csvtojson');
 var User = require('./models/usersSchema').User;
+var File = require('./models/filesSchema').File;
 var cors = require('cors');
 
 // CORS
@@ -44,7 +45,7 @@ app.get('/api/users/moneyJump', (req, res) => {
     id: new Date().getTime(),
     name: 'Uber', amount: '250',
     category: 'Transportation',
-    image:'http://localhost:5000/assets/files/1550992119148.png',
+    image:'http://localhost:5000/assets/files/5c74c3d9ae51cb11a4ea5aed.png',
     date: new Date()};
 
   res.json(moneyJump);
@@ -56,10 +57,10 @@ app.get('/api/users', (req, res) => {
 
   var moneyJump = {
     id: 'Ixwuh376UHIhslI',
-    name:'moneyJump',
-    amount:'250',
-    category:'Transportation',
-    image:'http://localhost:5000/assets/files/1550992119148.png',
+    name: 'moneyJump',
+    amount: '250',
+    category: 'Transportation',
+    image: 'http://localhost:5000/assets/files/5c74c3d9ae51cb11a4ea5aed.png',
     date: new Date()
   };
 
@@ -68,7 +69,7 @@ app.get('/api/users', (req, res) => {
     name: 'ChatBot',
     amount: '250',
     category: 'Transportation',
-    image:'http://localhost:5000/assets/files/1550992119148.png',
+    image:'http://localhost:5000/assets/files/5c74c3d9ae51cb11a4ea5aed.png',
     date: new Date()
   };
 
@@ -84,20 +85,34 @@ app.get('/api/users', (req, res) => {
 
 app.post('/api/upload-data', (req, res) => {
 
-  var fileName = new Date().getTime();
-  var extension = req.files.uploadFile.path.split(".").pop();
+  var owner = req.body.owner;
+  var title = req.body.title;
+  var extension = req.body.uploadFile.path.split(".").pop();
 
-  fs.rename(req.files.uploadFile.path, 'public/assets/files/' + fileName + '.' + extension, function(err){
-   if(!err){
-     res.send('POSTED!!!');
-   } else {
-     res.send("ERROR");
-   }
- });
+  var newFile = new File({
+    owner : owner,
+    title: title,
+    extension : extension
+  });
+
+  newFile.save((err) => {
+    if(!err){
+      fs.rename(req.body.uploadFile.path, 'public/assets/files/' + newFile._id + '.' + extension, function(err){
+        if(!err){
+          File.find(function(err, doc){
+            console.log(doc);
+            res.send('POSTED!!!');
+          });
+         } else {
+           res.send("Unable to RENAME data");
+         }
+       });
+    } else {
+      res.send("Unable to SAVE data");
+    }
+  });
+
 });
-
-
-
 
 const port = 5000;
 
