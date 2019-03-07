@@ -81,6 +81,41 @@ app.get('/api/users', (req, res) => {
 
 
 
+app.get('/api/ownersList', (req, res) => {
+
+  const ownersList = [
+    {id: "1", name:"Alex"},
+    {id: "2", name:"Luis"}
+  ];
+
+  const monthList = [
+    {id: "1", month:"January"},
+    {id: "2", month:"February"},
+    {id: "3", month:"March"},
+    {id: "4", month:"April"},
+    {id: "5", month:"May"},
+    {id: "6", month:"June"},
+    {id: "7", month:"July"},
+    {id: "8", month:"August"},
+    {id: "9", month:"September"},
+    {id: "10", month:"October"},
+    {id: "11", month:"November"},
+    {id: "12", month:"December"}
+  ];
+
+  const yearList = [
+    {id: "1", year:"2019"},
+    {id: "2", year:"2018"}
+  ];
+
+  const inputFields = {ownersList: ownersList, monthList:monthList, yearList:yearList}
+
+  res.json(inputFields);
+
+})
+
+
+
 // From Client
 
 app.post('/api/upload-data', (req, res) => {
