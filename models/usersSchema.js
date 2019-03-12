@@ -1,17 +1,15 @@
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
+mongoose.connect('mongodb://localhost:27017/moneyJumpApp', { useNewUrlParser: true })
 
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-
-mongoose.connect('mongodb://localhost:27017/moneyJumpApp', {useNewUrlParser: true});
-
-var usersSchema = new mongoose.Schema({
+const usersSchema = new Schema({
   name: String,
   amount: Number,
   category: String,
   date: String
-});
+})
 
-var User = mongoose.model('User', usersSchema);
+const User = mongoose.model('User', usersSchema)
 
-module.exports.User = User;
+module.exports.User = User

@@ -1,14 +1,14 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-mongoose.connect('mongodb://localhost:27017/moneyJumpApp', {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost:27017/moneyJumpApp', { useNewUrlParser: true })
 
-var fileSchema = new Schema({
-  title: {type: String},
-  owner: {type: String},
-  extension: {type: String}
-});
+const fileSchema = new Schema({
+  title: { type: String },
+  owner: { type: String },
+  extension: { type: String }
+})
 
-var File = mongoose.model('File', fileSchema);
+const File = mongoose.model('File', fileSchema)
 
-module.exports.File = File;
+module.exports.File = File
