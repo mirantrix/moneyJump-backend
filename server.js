@@ -1,17 +1,8 @@
 const express = require('express');
+const cors = require('cors');
+const api = require('./controllers/apisRoute');
 
 const app = express();
-const fs = require('fs');
-const convert = require('xml-js');
-const csvtojsonV1 = require('csvtojson/v1');
-const csv = require('csvtojson');
-const cors = require('cors');
-
-// CORS
-const corsOptions = {
-  origin: 'http://localhost:3000',
-  optionsSuccessStatus: 200,
-};
 
 // Form Data
 const formData = require('express-form-data');
@@ -23,19 +14,17 @@ const options = {
 };
 
 app.use(formData.parse(options));
-app.use(formData.format());
-app.use(formData.stream());
 app.use(formData.union());
 
-const methodOverride = require('method-override');
-const { File } = require('./models/filesSchema');
-const { User } = require('./models/usersSchema');
-const api = require('./controllers/apisRoute');
+// CORS
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200,
+};
 
-app.use(methodOverride('_method'));
-
-// App Use
 app.use(cors(corsOptions));
+
+// Static
 app.use(express.static('public'));
 
 // Api Route

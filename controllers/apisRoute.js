@@ -1,9 +1,10 @@
 const express = require('express');
-const { File } = require('./../models/filesSchema');
 const fs = require('fs');
 const convert = require('xml-js');
 const csv = require('csvtojson');
 const cors = require('cors');
+const File = require('./../models/filesSchema').File;
+
 
 const api = express.Router();
 
